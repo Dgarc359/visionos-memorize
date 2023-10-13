@@ -2,6 +2,8 @@
 
 > ⚠️ WORK IN PROGRESS
 
+<img src="https://github.com/Dgarc359/visionos-memorize/blob/main/docs/gifs/v1.gif" width="300">
+
 Memorize is a memory game written in Swift.
 You can follow along and create your own version of it if you go to this [link](https://cs193p.sites.stanford.edu/2021-0)
 
