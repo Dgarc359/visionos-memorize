@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct Areas: View {
+    let game = EmojiMemoryGameVM()
+    
     var body: some View {
         NavigationStack {
             navigateToAreas
@@ -25,15 +27,15 @@ struct Areas: View {
                 ForEach(Area.allCases) { area in
                     NavigationLink {
                         if area == Area.gaming {
-                            ContentView(emojis: ["🎮", "🕹️", "👾", "🎲", "🧩", "🤖", "👺", "🛸", "🚀", "🛰️", "⚔️", "🛡️", "🔫", "💣", "🪓", "🏹", "🧨", "🪄", "🔮", "🥁", "🎹", "🎸", "🎺", "🎷", "🎻"], cardColor: .green)
+                            ContentView(cardColor: .green, viewModel: game)
                         }
                         
                         else if area == Area.cars {
-                            ContentView(emojis: ["🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐", "🚚", "🚛", "🚜", "🛴", "🛵", "🏍️", "🚲", "🚡", "🚠", "🚟", "🚁", "🛸", "🚀", "🛰️", "🛶"], cardColor: .gray)
+                            ContentView(cardColor: .gray, viewModel: game)
                         }
                         
                         else if area == Area.sports {
-                            ContentView(emojis: ["⚽️", "🏀", "🏈", "⚾️", "🥎", "🎾", "🏐", "🏉", "🥏", "🎱", "🏓", "🏸", "🏒", "🏑", "🥍", "🏏", "🥊", "🥋", "跆ekwondo", "🩰", "🤺", "🥇", "🥈", "🥉"], cardColor: .red)
+                            ContentView(cardColor: .red, viewModel: game)
                         }
                     } label: {
                         if area == Area.gaming {
