@@ -17,9 +17,7 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
     
-    var cardColor: Color
     @ObservedObject var viewModel: EmojiMemoryGameVM
-    
     
     var body: some View {
         ScrollView {
@@ -34,7 +32,7 @@ struct ContentView: View {
             }
         }
         .padding(.bottom, 30)
-        .foregroundColor(cardColor)
+        .foregroundColor(viewModel.theme.color)
         .padding(.horizontal, 30)
     }
 }
@@ -64,5 +62,5 @@ struct CardView: View {
 
 #Preview(windowStyle: .automatic) {
     let game = EmojiMemoryGameVM()
-    ContentView(cardColor: .red, viewModel: game)
+    ContentView(viewModel: game)
 }

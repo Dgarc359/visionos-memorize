@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ThemeOptionsView: View {
     @ObservedObject var viewModel: EmojiMemoryGameVM
+    init(viewModel: EmojiMemoryGameVM) {
+        self.viewModel = viewModel
+        viewModel.setCurrentlyHoveredTheme(
+            MemoryGame<String>.Theme(id: 0, name: Themes.custom.title, pairsToShow: Themes.custom.pairsToShow, color: Themes.custom.color, emojis: Themes.custom.emojis))
+    }
     
     var body: some View {
             HStack {
@@ -36,7 +41,7 @@ struct ThemeOptionsView: View {
                     Text(theme.title)
                         .font(.system(size: 40))
                         .onTapGesture {
-                            let theme = MemoryGame<String>.Theme(id: 0, name: theme.title, pairsToShow: theme.pairsToShow, color: theme.color, emojis: [])
+                            let theme = MemoryGame<String>.Theme(id: 0, name: theme.title, pairsToShow: theme.pairsToShow, color: theme.color, emojis: theme.emojis)
                             viewModel.setCurrentlyHoveredTheme(theme)
                             print("Currently hovering: \(theme)")
                             
@@ -51,6 +56,9 @@ struct ThemeOptionsView: View {
     
     struct ThemeConfiguration: View {
         @ObservedObject var viewModel: EmojiMemoryGameVM
+        @Environment(\.dismissWindow) private var dismissWindow
+        @State private var debounceTimeElapsed = false
+        
         var body: some View {
             VStack {
                 Text("Currently in use: \(viewModel.theme.name)")
@@ -59,7 +67,11 @@ struct ThemeOptionsView: View {
                 Spacer()
                 Text("Emojis:")
                     .font(.system(size: 30))
-                Spacer()
+                    .padding(.bottom, 10)
+                
+                EmojiScroll(viewModel: viewModel)
+                    .frame(maxHeight: 60)
+                
                 Text("Theme Name: \(viewModel.currentlyHoveredTheme.name)")
                     .font(.system(size: 30))
                 Spacer()
@@ -70,11 +82,6 @@ struct ThemeOptionsView: View {
                     Text("Color:")
                         .font(.system(size: 30))
                     ZStack {
-//                        ColorPicker("", selection: Binding<Color>(
-//                            get: { $viewModel.currentlyHoveredTheme.color},
-//                            set: { viewModel.setCurrentlyHoveredTheme($0)}
-//                            )
-//                        )
                         Rectangle()
                             .foregroundColor(viewModel.currentlyHoveredTheme.color)
                             .frame(width: 20, height: 20)
@@ -87,19 +94,35 @@ struct ThemeOptionsView: View {
                 }
                 Spacer()
                 Button(action: {
+                    print("emojis \(viewModel.theme.emojis)")
                     print("using theme")
                     
                     viewModel.pickTheme(viewModel.currentlyHoveredTheme)
-                    print("vm theme: \(viewModel.theme)")
+                    Task {
+                        print("waiting for 7.5 seconds")
+                        try await Task.sleep(nanoseconds: 1_000_000_000)
+                        dismissWindow(id: "ThemeOptionsView")
+                    }
                 }) {
                     Text("Use this theme")
                         .font(.system(size: 30))
                 }
-                
-                
                 Spacer()
-                    
-                
+            }
+        }
+    }
+    
+    struct EmojiScroll: View {
+        @ObservedObject var viewModel: EmojiMemoryGameVM
+        var body: some View {
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(viewModel.currentlyHoveredTheme.emojis, id: \.self) { emoji in
+                        Text(emoji)
+                            .font(.system(size: 50))
+                            .frame(minWidth: 50)
+                    }
+                }
             }
         }
     }

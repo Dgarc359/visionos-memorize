@@ -8,12 +8,9 @@
 import SwiftUI
 
 struct ThemeView: View {
+    @ObservedObject var viewModel: EmojiMemoryGameVM
     
     @Environment(\.openWindow) private var openWindow
-    
-    
-    @State var circleWidthMultiplier: CGFloat = 1;
-    @State var isClicked = false;
     
     var body: some View {
         Text("Theme")
@@ -21,40 +18,22 @@ struct ThemeView: View {
             .font(.system(size: 30, weight: .medium))
             .padding(.trailing, 10)
         
-        if(isClicked) {
-//            WindowGroup() {
-//                View {
-//                    
-//                }
-//            }
-        }
-        
         ZStack() {
             Circle()
-                .frame(width: 40 * circleWidthMultiplier)
+                .frame(width: 40)
+                .foregroundColor(viewModel.theme.color)
             Circle()
                 .stroke(lineWidth: 2)
-                .frame(width: 45 * circleWidthMultiplier)
+                .frame(width: 45)
                 .foregroundColor(.black)
         }
         .onTapGesture {
-            // There's probably a better way to do this animation
-            if(isClicked) {
-                circleWidthMultiplier = 1.0
-                isClicked = false
-                return
-            }
             openWindow(id: "ThemeOptionsView")
-            isClicked = true
         }
     }
-    
-    
 }
 
-
-
-
 #Preview {
-    ThemeView()
+    let game = EmojiMemoryGameVM()
+    return ThemeView(viewModel: game)
 }

@@ -23,4 +23,5 @@ enum Area: String, Identifiable, CaseIterable, Equatable
             "The mission"
         }
     }
+    
 }
