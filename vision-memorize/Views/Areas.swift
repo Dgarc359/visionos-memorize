@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct Areas: View {
-    let game = EmojiMemoryGameVM()
+    var game: EmojiMemoryGameVM = EmojiMemoryGameVM()
+    
     
     var body: some View {
         NavigationStack {
@@ -18,6 +19,27 @@ struct Areas: View {
     
     var navigateToAreas: some View {
         VStack {
+            HStack {
+                Spacer()
+                ThemeView()
+//                Text("Theme")
+//                    .monospaced()
+//                    .font(.system(size: 30, weight: .medium))
+//                    .padding(.trailing, 10)
+//                
+//                ZStack() {
+//                    Circle()
+//                        .frame(width: 40)
+//                    Circle()
+//                        .stroke(lineWidth: 2)
+//                        .frame(width: 45)
+//                        .foregroundColor(.black)
+//                }
+//                .onTapGesture {
+//                }
+            }
+            .padding(.trailing, 100)
+            
             Text("Welcome to Memorize!")
                 .monospaced()
                 .font(.system(size: 40, weight: .bold))

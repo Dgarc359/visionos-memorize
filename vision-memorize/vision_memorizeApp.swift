@@ -9,14 +9,13 @@ import SwiftUI
 
 @main
 struct vision_memorizeApp: App {
+    let game: EmojiMemoryGameVM = EmojiMemoryGameVM()
     var body: some Scene {
         WindowGroup {
-//            CardView()
-            Areas()
+            Areas(game: game)
         }
-
-        ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
+        WindowGroup(id: "ThemeOptionsView") {
+            ThemeOptionsView(viewModel: game)
         }
     }
 }

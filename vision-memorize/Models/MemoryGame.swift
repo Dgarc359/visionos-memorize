@@ -6,13 +6,17 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: Array<Card>
+    private(set) var currentTheme: Theme = Theme(id: 0, name: "custom", pairsToShow: 5, color: .gray, emojis: [])
+    private(set) var themesArr: Array<Theme>
+    private(set) var currentlyHoveredTheme: Theme = Theme(id: 0, name: "custom", pairsToShow: 5, color: .gray, emojis: [])
     
     private var faceUpCardIndex: Int?
     
-    init(numberOfPairsOfCards: Int, createCardContent: (Int) -> CardContent) {
+    init(numberOfPairsOfCards: Int, themes: Array<Theme>, createCardContent: (Int) -> CardContent) {
         cards = Array<Card>()
         
         // add number of pairs of cards * 2 to cards arr
@@ -21,6 +25,21 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: pairIndex * 2))
             cards.append(Card(content: content, id: pairIndex * 2 + 1))
         }
+        
+        themesArr = themes
+    }
+    
+    mutating func setCurrentThemeColor(_ setColor: Color) {
+        currentTheme = Theme(id: currentTheme.id, name: currentTheme.name, pairsToShow: currentTheme.pairsToShow, color: setColor, emojis: currentTheme.emojis)
+    }
+    
+    
+    mutating func setCurrentlyHoveredTheme(_ theme: Theme) {
+        currentlyHoveredTheme = theme
+    }
+    
+    mutating func pickTheme(_ theme: Theme) {
+        currentTheme = theme
     }
     
     mutating func choose(_ card: Card) {
@@ -44,6 +63,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards[chosenIndex].isFaceUp.toggle()
         }
         print("\(cards)")
+    }
+    
+    struct Theme: Identifiable {
+        var id: Int
+        var name: String
+        var pairsToShow: Int
+        var color: Color
+        var emojis: Array<CardContent>
     }
     
     struct Card: Identifiable {
